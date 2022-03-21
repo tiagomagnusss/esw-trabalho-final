@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block title %}Cadastro{% endblock %}
+
+{% block content %}
+<h2>Cadastro</h2>
+
+
+<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <form class="was-validated">
+        <div class="custom-control custom-checkbox mb-3">
+            <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
+            <label class="custom-control-label" for="customControlValidation1">Concordo com os Termos de Serviço da Plataforma ESCAMBOX*</label>
+
+            <div class="invalid-feedback">Por favor, aceite os Termos de Serviço para prosseguir com o cadastro.
+
+            </div>
+        </div>
+
+        <button class="btn btn-success" href="#" type="submit">Cadastrar</button>
+        </form>
+        {% endblock %}
+
+    </form>
