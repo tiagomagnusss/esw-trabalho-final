@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Create product{% endblock %}
+
+{% block content %}
+    <h1>Create a product</h1>
+    <form method="post" enctype="multipart/form-data" class="post-form contact-form">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+        <input type="submit" class="" value="Create product"/>
+    </form>
+{% endblock %}
