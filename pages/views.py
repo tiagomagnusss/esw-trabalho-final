@@ -15,8 +15,15 @@ class ProductListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ProductListView, self).get_context_data(**kwargs)
         product = Product.objects.all().order_by('created_at')
+        search = self.request.GET.get('search')
+        if search:
+            product= product.filter(title__icontains=search) 
+    
         paginator = Paginator(product, self.paginate_by)
         page = self.request.GET.get('page')
+
+     
+      
 
         try:
             products = paginator.page(page)
@@ -25,6 +32,8 @@ class ProductListView(ListView):
         except EmptyPage:
             products = paginator.page(paginator.num_pages)
 
+       
+             
         context['products'] = products
         return context
 
@@ -63,3 +72,6 @@ class ProductCreateView(CreateView):
 
     def get_success_url(self):
         return reverse('pages:productdetail', kwargs={'pk': self.object.id})
+
+
+
