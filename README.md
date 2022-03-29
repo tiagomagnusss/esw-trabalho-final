@@ -14,7 +14,7 @@ Os comandos a seguir devem ser rodados na raíz do repositório. Recomenda-se qu
 Para criar o ambiente virtual: `py -m venv .`
 Para entrar no ambiente virtual: `Scripts\Activate.ps1`
 
-Uma vez lá dentro, podemos instalar as bibliotecas necessárias para rodar o projeto: `py -m pip install Django colorama`
+Uma vez lá dentro, podemos instalar as bibliotecas necessárias para rodar o projeto: `py -m pip install Django colorama` e `py -m pip install Pillow`.
 
 Com isso, temos acesso ao terminal do Django e podemos trabalhar no projeto :)
 
