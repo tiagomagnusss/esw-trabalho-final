@@ -34,6 +34,34 @@
           <input type="text" readonly class="form-control-plaintext" id="owner" value="{{ owner }}">
         </div>
       </div>
+      {% if request.user.is_authenticated %}
+      {% if owner == request.user %}
+      <a href="{% url 'pages:productupdate' pk=product.id %}" class="btn btn-success">Update product</a>
+      <a href="{% url 'pages:productdelete' pk=product.id %}" class="btn btn-danger">Delete product</a>
+      {%endif%}
+
     </form>
+
+    <form method="post" id="formTwo">
+    {% csrf_token %}
+    <input type="hidden" name="form_type" value="formTwo">
+
+      {% if owner != request.user %}
+      <div class="btn btn-success">Make offer!</div>
+
+      {% if is_already_liked %}
+      <button class="btn btn-success" name="like" value="dislike">Dislike</button>
+      {% else %}
+      <button class="btn btn-success" name="like" value="like">Like</button>
+      {% endif %}
+
+      {% endif %}
+      {% endif %}
+
+
+    </form>
+
+
+
 {% endblock %}
 
