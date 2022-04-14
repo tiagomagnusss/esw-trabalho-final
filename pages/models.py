@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class Product(models.Model):
     title = models.CharField(max_length=60)
@@ -9,3 +10,7 @@ class Product(models.Model):
     sold = models.BooleanField(default=False)
     original_owner = models.ForeignKey('auth.User', related_name='products', on_delete=models.CASCADE)
     image = models.ImageField(upload_to='images/', blank=True, null=True)
+    liked_by = models.ManyToManyField('auth.User')
+
+    def __str__(self):
+        return "%s : %s" % (self.title, self.description)
