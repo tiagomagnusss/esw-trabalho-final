@@ -9,8 +9,16 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     sold = models.BooleanField(default=False)
     original_owner = models.ForeignKey('auth.User', related_name='products', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/', blank=True, null=True)
+    image = models.ImageField(upload_to='product_images/', blank=True, null=True)
     liked_by = models.ManyToManyField('auth.User')
 
     def __str__(self):
         return "%s : %s" % (self.title, self.description)
+
+
+class Trade(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    seller = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    buyer_email = models.EmailField(max_length=254)
+    observation = models.CharField(max_length=60, blank=True, null=True)
+

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Sell product{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data" class="post-form contact-form">
+        {% csrf_token %}
+        <h1>Sell product "{{ object.title }}?"</h1>
+        <div class="form-group">
+            <label>Email address of the buyer</label>
+            <input type="email" class="form-control" name="buyer_email" aria-describedby="emailHelp" placeholder="Enter email">
+        </div>
+
+        <div class="form-group">
+        <label>Observation (optional)</label>
+        <input type="text" class="form-control-file" name="observation">
+        </div>
+
+        <input type='submit' value="Sell" class="btn btn-success">
+        <a href="{% url 'pages:products' %}" class="btn btn-danger"> Go back </a>
+    </form>
+{% endblock %}
