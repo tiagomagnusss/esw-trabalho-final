@@ -4,17 +4,18 @@
 
 {% block content %}
     <h1>Products</h1>
-    <p><b>Esta é a página onde você pode encontrar produtos para trocar ou negociar com outros vendedores.</b></p>
+    <p><b>In this page you can find all the available products and get in touch with the sellers.</b></p>
 <div class = "row">
-    <div class="col-sm-4">
+    <div class="col-md-4">
     {% if request.user.is_authenticated %}
-    <a href="{% url 'pages:productcreate' %}" class="my-4 btn btn-success">Criar novo produto</a>
+    <a href="{% url 'pages:productcreate' %}" class="my-4 btn btn-primary">Create new product</a>
     {% endif %}
     <form action="." method="GET" class="form-inline">
-        <input type="text" id="search" name="search" class="form-control"  placeholder = "Pesquise um produto">
-        <input type="submit" class="my-4 btn btn-success "  style= "margin-left:5px;"value ="Buscar">
+        <input type="text" id="search" name="search" class="form-control"  placeholder = "Search for a product">
+        <input type="submit" class="my-4 btn btn-primary "  style= "margin-left:5px;"value ="Search">
         {% if request.user.is_authenticated %}
-        <button name="favorites" class="my-4 btn btn-success" value="true"> Show only your favorite products </button>
+        <button name="favorites" class="my-4 btn btn-primary" value="true"> Show only your favorite products </button>
+        <button name="own_products" class="my-4 btn btn-primary" value="true"> Show only your own products </button>
         {% endif %}
     </form>
     </div>
@@ -29,7 +30,7 @@
                     <div class="">
                         <h2>{{ product.title|upper }}</h2>
                         <p>{{ product.description }}</p>
-                        <a href="{% url 'pages:productdetail' pk=product.id %}" class="btn btn-success">Ver</a>
+                        <a href="{% url 'pages:productdetail' pk=product.id %}" class="btn btn-primary">See</a>
                     </div>
                 </div>
             </li>

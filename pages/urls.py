@@ -6,10 +6,12 @@ from . import views
 app_name = "pages"
 
 urlpatterns = [
-    path("", views.HomePageView.as_view(), name = 'home'),
-    path("products/", views.ProductListView.as_view(), name = 'products'),
+    path("", views.HomePageView.as_view(), name='home'),
+    path("products/", views.ProductListView.as_view(), name='products'),
     path('products/<int:pk>/', views.ProductDetailView.as_view(), name='productdetail'),
     path('products/add/', views.ProductCreateView.as_view(), name='productcreate'),
     path('products/update/<int:pk>/', views.ProductUpdateView.as_view(), name='productupdate'),
     path('products/delete/<int:pk>/', views.ProductDeleteView.as_view(), name='productdelete'),
+    path('products/sell/<int:pk>/', views.ProductSellView.as_view(), name='productsell'),
+    path("trades/", views.TradeListView.as_view(), name='trades'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
