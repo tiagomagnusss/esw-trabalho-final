@@ -35,6 +35,9 @@
         </div>
       </div>
       {% if request.user.is_authenticated %}
+      <a href="https://twitter.com/intent/tweet?text=Look%20{{object.title|urlencode}}%20for%20only%20R$%20{{object.price|urlencode}}%20on%20Escambox!%20http%3A//127.0.0.1%3A8000/products/{{object.id}}/" >Share on Twitter</a>
+      <br>
+      <br>
       {% if owner == request.user %}
       {% if object.sold == False %}
       <a href="{% url 'pages:productsell' pk=product.id %}" class="btn btn-primary" >Mark as sold</a>
