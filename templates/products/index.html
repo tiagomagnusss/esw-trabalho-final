@@ -14,8 +14,8 @@
         <input type="text" id="search" name="search" class="form-control"  placeholder = "Search for a product">
         <input type="submit" class="my-4 btn btn-primary "  style= "margin-left:5px;"value ="Search">
         {% if request.user.is_authenticated %}
-        <button name="favorites" class="my-4 btn btn-primary" value="true"> Show only your favorite products </button>
-        <button name="own_products" class="my-4 btn btn-primary" value="true"> Show only your own products </button>
+            <button name="favorites" class="my-4 btn btn-primary" value="true"> Show only your favorite products </button>
+            <button name="own_products" class="my-4 btn btn-primary" value="true"> Show only your own products </button>
         {% endif %}
     </form>
     </div>

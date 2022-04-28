@@ -35,14 +35,15 @@
         </div>
       </div>
       {% if request.user.is_authenticated %}
-      {% if owner == request.user %}
-      {% if object.sold == False %}
-      <a href="{% url 'pages:productsell' pk=product.id %}" class="btn btn-primary" >Mark as sold</a>
-      <br><br>
-      {%endif%}
-      <a href="{% url 'pages:productupdate' pk=product.id %}" class="btn btn-success">Update product</a>
-      <a href="{% url 'pages:productdelete' pk=product.id %}" class="btn btn-danger">Delete product</a>
-      {%endif%}
+        {% if owner == request.user %}
+          {% if object.sold == False %}
+            <a href="{% url 'pages:productsell' pk=product.id %}" class="btn btn-primary" >Mark as sold</a>
+            <br><br>
+          {%endif%}
+
+          <a href="{% url 'pages:productupdate' pk=product.id %}" class="btn btn-success">Update product</a>
+          <a href="{% url 'pages:productdelete' pk=product.id %}" class="btn btn-danger">Delete product</a>
+        {%endif%}
       {%endif%}
 
     </form>
@@ -51,20 +52,14 @@
     {% csrf_token %}
     <input type="hidden" name="form_type" value="formTwo">
       {% if request.user.is_authenticated %}
-      {% if owner != request.user %}
-      {% if is_already_liked %}
-      <button class="btn btn-danger" name="like" value="dislike">Dislike</button>
-      {% else %}
-      <button class="btn btn-success" name="like" value="like">Like</button>
-
+        {% if owner != request.user %}
+          {% if is_already_liked %}
+            <button class="btn btn-danger" name="like" value="dislike">Dislike</button>
+          {% else %}
+            <button class="btn btn-success" name="like" value="like">Like</button>
+          {% endif %}
+        {% endif %}
       {% endif %}
-      {% endif %}
-      {% endif %}
-
-
     </form>
-
-
-
 {% endblock %}
 
