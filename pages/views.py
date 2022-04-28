@@ -70,7 +70,7 @@ class ProductListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ProductListView, self).get_context_data(**kwargs)
-        product = Product.objects.all().filter(sold=False).order_by('created_at')
+        product = Product.objects.all().filter(sold=False).order_by('-created_at')
 
         search = self.request.GET.get('search')
         favorites = self.request.GET.get('favorites')
