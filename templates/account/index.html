@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Accounts{% endblock %}
+
+{% block content %}
+    <h1>Accounts</h1>
+    <p><b>In this page you can find all user accounts and delete any of them.</b></p>
+    <p>The search will be aplied to user's username, first and last names and their email.</p>
+    <div class = "row">
+      <div class="col-md-4">
+        <form action="." method="GET" class="form-inline">
+          <input type="text" id="search" name="search" class="form-control"  placeholder = "Search for a user">
+          <input type="submit" class="my-4 btn btn-primary" style= "margin-left:5px;"value ="Search">
+        </form>
+      </div>
+    </div>
+
+    <div class="card-columns">
+      {% for user in users %}
+        <div class="card shadow-sm">
+          <h5 class="card-header">{{ user.username|upper }}</h5>
+          <div class="card-body">
+            <!-- show all user information -->
+            <span class="card-text"><b>Email: </b>{{ user.email }}</span>
+            <br>
+            <span class="card-text"><b>First name: </b>{{ user.first_name }}</span>
+            <br>
+            <span class="card-text"><b>Last name: </b>{{ user.last_name }}</span>
+            <br>
+            <span class="card-text"><b>Date joined: </b>{{ user.date_joined }}</span>
+
+            <div class="mt-2">
+              {% with uid=user.id|stringformat:"s" %}
+                {% with fid='formFor'|add:uid %}
+                  <form method="post" id="{{ fid }}">
+                    {% csrf_token %}
+                    <input type="hidden" name="form_type" value="{{ fid }}">
+                    <input type="hidden" name="user_id" value="{{ uid }}">
+
+                    {% if request.user.is_authenticated %}
+                      {% if request.user.is_staff and user != request.user %}
+                        <button class="btn btn-danger" name="delete" value="delete">Delete user</button>
+                      {% endif %}
+                    {% endif %}
+                  </form>
+                {% endwith %}
+              {% endwith %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if page_obj is not None %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+{% endblock %}
