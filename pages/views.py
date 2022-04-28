@@ -49,6 +49,20 @@ class AccountsPageView(ListView):
         context['users'] = user
         return context
 
+class AccountDetailView(DetailView):
+    template_name = "account/account.html"
+    model = User
+
+    def post(self, request, *args, **kwargs):
+        self.object = User.objects.get(id=kwargs.get('pk'))
+
+        data = request.POST
+        action = data.get("delete")
+        if action == "delete":
+            self.object.delete()
+
+        return HttpResponseRedirect('/')
+
 class ProductListView(ListView):
     paginate_by = 10
     model = Product

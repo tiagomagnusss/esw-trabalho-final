@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Your account{% endblock %}
+
+{% block content %}
+  <h1>Do you want to remove your account?</h1>
+  <p>All of your product announcementes will be deleted as well.</p>
+
+  <div class="mt-2">
+    {% with uid=user.id|stringformat:"s" %}
+      {% with fid='formFor'|add:uid %}
+        <form method="post" id="{{ fid }}">
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="{{ fid }}">
+
+          {% if request.user.is_authenticated %}
+            <button class="btn btn-danger" name="delete" value="delete">Delete my account</button>
+          {% endif %}
+        </form>
+      {% endwith %}
+    {% endwith %}
+  </div>
+{% endblock %}

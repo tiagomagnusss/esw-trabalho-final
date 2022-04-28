@@ -29,13 +29,17 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'pages:trades' %}">My trades</a>
                     </li>
-                {% endif %}
 
-                {% if request.user.is_staff %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'pages:accounts' %}">Accounts</a>
-                    </li>
-                {%endif%}
+                    {% if request.user.is_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'pages:accounts' %}">Accounts</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'pages:accountdetail' pk=request.user.id %}">My account</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
             </ul>
         </div>
 
