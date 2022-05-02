@@ -2,6 +2,8 @@ from django.http import Http404, HttpResponseRedirect
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.forms import ModelForm, TextInput, NumberInput
+from django.db.models import Q
+from django.contrib.auth.models import User
 from django.urls import reverse
 from pages.models import Product, Trade
 
@@ -9,6 +11,57 @@ from pages.models import Product, Trade
 class HomePageView(TemplateView):
     template_name = "home.html"
 
+class AccountsPageView(ListView):
+    model = User
+    paginate_by = 10
+    template_name = "account/index.html"
+
+    def post(self, request, *args, **kwargs):
+        data = request.POST
+        id = data.get("user_id")
+        action = data.get("delete")
+
+        self.object = User.objects.get(id=id)
+        if action == "delete":
+            self.object.delete()
+
+        return HttpResponseRedirect(request.path_info)
+
+    def get_context_data(self, **kwargs):
+        context = super(AccountsPageView, self).get_context_data(**kwargs)
+        user = User.objects.all().order_by('username')
+
+        search = self.request.GET.get('search')
+
+        if search:
+            user = user.filter(Q(username__icontains=search) | Q(email__icontains=search) | Q(first_name__icontains=search) | Q(last_name__icontains=search))
+
+        paginator = Paginator(user, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            user = paginator.page(page)
+        except PageNotAnInteger:
+            user = paginator.page(1)
+        except EmptyPage:
+            user = paginator.page(paginator.num_pages)
+
+        context['users'] = user
+        return context
+
+class AccountDetailView(DetailView):
+    template_name = "account/account.html"
+    model = User
+
+    def post(self, request, *args, **kwargs):
+        self.object = User.objects.get(id=kwargs.get('pk'))
+
+        data = request.POST
+        action = data.get("delete")
+        if action == "delete":
+            self.object.delete()
+
+        return HttpResponseRedirect('/')
 
 class ProductListView(ListView):
     paginate_by = 10
@@ -17,7 +70,7 @@ class ProductListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(ProductListView, self).get_context_data(**kwargs)
-        product = Product.objects.all().filter(sold=False).order_by('created_at')
+        product = Product.objects.all().filter(sold=False).order_by('-created_at')
 
         search = self.request.GET.get('search')
         favorites = self.request.GET.get('favorites')

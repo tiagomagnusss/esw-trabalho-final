@@ -14,28 +14,33 @@
         <input type="text" id="search" name="search" class="form-control"  placeholder = "Search for a product">
         <input type="submit" class="my-4 btn btn-primary "  style= "margin-left:5px;"value ="Search">
         {% if request.user.is_authenticated %}
-        <button name="favorites" class="my-4 btn btn-primary" value="true"> Show only your favorite products </button>
-        <button name="own_products" class="my-4 btn btn-primary" value="true"> Show only your own products </button>
+            <button name="favorites" class="my-4 btn btn-primary" value="true"> Show only your favorite products </button>
+            <button name="own_products" class="my-4 btn btn-primary" value="true"> Show only your own products </button>
         {% endif %}
     </form>
     </div>
 </div>
-    <ul class="list-group">
+    <div class="card-columns">
         {% for product in products %}
-            <li class="list-group-item">
-                <div class="d-inline-flex">
+                <div class="card shadow-sm">
                     {% if product.image %}
-                        <img src="{{ product.image.url }}" class="col-4 mr-4 rounded float-left img-fluid"/>
+                        <img src="{{ product.image.url }}" class="card-img-top"/>
+                    {% else %}
+                        <img src="/static/placeholder.png" class="card-img-top"/>
                     {% endif %}
-                    <div class="">
-                        <h2>{{ product.title|upper }}</h2>
-                        <p>{{ product.description }}</p>
-                        <a href="{% url 'pages:productdetail' pk=product.id %}" class="btn btn-primary">See</a>
+                    <h5 class="card-header">{{ product.title|upper }}</h5>
+                    <div class="card-body">
+                        {% if product.description == "" %}
+                        <p class="card-text text-muted font-italic">No description added</p>
+                        {% else %}
+                            <p class="card-text">{{ product.description }}</p>
+                        {% endif %}
+                        <p class="font-weight-bold">R$ {{ product.price }}</p>
+                        <a href="{% url 'pages:productdetail' pk=product.id %}" class="stretched-link"></a>
                     </div>
                 </div>
-            </li>
         {% endfor %}
-    </ul>
+        </div>
 
     {% if page_obj is not None %}
         <div class="pagination">
