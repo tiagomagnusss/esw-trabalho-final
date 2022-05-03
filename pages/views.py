@@ -155,6 +155,13 @@ class ProductCreateView(CreateView):
     def get_success_url(self):
         return reverse('pages:productdetail', kwargs={'pk': self.object.id})
 
+    def post(self, request, *args, **kwargs):
+        try:
+            p = Product.objects.get(original_owner=self.request.user, title=request.POST.get("title"))
+            return HttpResponseRedirect(reverse('pages:productupdate', kwargs={'pk': p.id}))
+        except Product.DoesNotExist:
+            return super().post(request, *args, **kwargs)
+
 
 class ProductUpdateView(UpdateView):
     model = Product
