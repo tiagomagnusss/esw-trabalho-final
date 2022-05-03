@@ -3,54 +3,48 @@
 {% block title %}ESCAMBOX | {{ object.title }}{% endblock %}
 
 {% block content %}
-    <form>
+  <div class="card-group">
+    <div class="card shadow-sm">
       {% if product.image %}
-        <div class="form-group row">
-          <img src="{{ product.image.url }}" class="col-4 mr-4 rounded float-left img-fluid"/>
-        </div>
+          <img src="{{ product.image.url }}" class="card-img-top" style="object-fit: cover; aspect-ratio: 1/1;" />
+      {% else %}
+          <img src="/static/placeholder.png" class="card-img-top" style="object-fit: cover; aspect-ratio: 1/1;"/>
       {% endif %}
-      <h1>{{ object.title|upper }}</h1>
-      <div class="form-group row">
-        <label for="description" class="font-weight-bold col-sm-2 col-form-label">Description</label>
-        <div class="col-sm-10">
-          <input type="text" readonly class="form-control-plaintext" id="description" value="{{ object.description }}">
-        </div>
+    </div>
+
+    <div class="card shadow-sm">
+      <h5 class="card-header">{{ product.title }}</h5>
+      <div class="card-body">
+          {% if product.description == "" %}
+          <p class="card-text text-muted font-italic">No description added</p>
+          {% else %}
+              <p class="card-text">{{ product.description }}</p>
+          {% endif %}
+          <a href="{% url 'pages:productdetail' pk=product.id %}" class="stretched-link"></a>
       </div>
-      <div class="form-group row">
-        <label for="price" class="font-weight-bold col-sm-2 col-form-label">Price</label>
-        <div class="col-sm-10">
-          <input type="text" readonly class="form-control-plaintext" id="price" value="R$ {{ object.price }}">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="created_at" class="font-weight-bold col-sm-2 col-form-label">Created at</label>
-        <div class="col-sm-10">
-          <input type="text" readonly class="form-control-plaintext" id="created_at" value="{{ object.created_at }}">
-        </div>
-      </div>
-      <div class="form-group row">
-        <label for="owner" class="font-weight-bold col-sm-2 col-form-label">Owned by</label>
-        <div class="col-sm-10">
-          <input type="text" readonly class="form-control-plaintext" id="owner" value="{{ owner }}">
-        </div>
-      </div>
-      {% if request.user.is_authenticated %}
-        <a href="https://twitter.com/intent/tweet?text=Look%20{{object.title|urlencode}}%20for%20only%20R$%20{{object.price|urlencode}}%20on%20Escambox!%20http%3A//127.0.0.1%3A8000/products/{{object.id}}/" >Share on Twitter</a>
-        <br>
-        <br>
-        {% if owner == request.user %}
-          {% if object.sold == False %}
-            <a href="{% url 'pages:productsell' pk=product.id %}" class="btn btn-primary" >Mark as sold</a>
-            <br><br>
+      <div class="card-footer">
+        <form>
+          <span class="btn-group">
+          {% if request.user.is_authenticated %}
+            <a class="btn-sm btn-primary" href="https://twitter.com/intent/tweet?text=Look%20{{object.title|urlencode}}%20for%20only%20R$%20{{object.price|urlencode}}%20on%20Escambox!%20http%3A//127.0.0.1%3A8000/products/{{object.id}}/" >Share on Twitter ✉️</a>
+            {% if owner == request.user %}
+              {% if object.sold == False %}
+                <a href="{% url 'pages:productsell' pk=product.id %}" class="btn-sm btn-info" >Sold 🤑</a>
+              {%endif%}
+              <a href="{% url 'pages:productupdate' pk=product.id %}" class="btn-sm btn-success">Update ♻️</a>
+              <a href="{% url 'pages:productdelete' pk=product.id %}" class="btn-sm btn-danger">Delete 🗑️</a>
+            {%endif%}
           {%endif%}
-          <a href="{% url 'pages:productupdate' pk=product.id %}" class="btn btn-success">Update product</a>
-          <a href="{% url 'pages:productdelete' pk=product.id %}" class="btn btn-danger">Delete product</a>
-        {%endif%}
-      {%endif%}
+          </span>
+          <span class="font-weight-bold float-right h4">R$ {{ product.price }}</span>
+        </form>
+      </div>
+    </div>
+  </div>
 
-    </form>
+  
 
-    <form method="post" id="formTwo">
+  <form method="post" id="formTwo">
     {% csrf_token %}
     <input type="hidden" name="form_type" value="formTwo">
       {% if request.user.is_authenticated %}
@@ -62,6 +56,6 @@
           {% endif %}
         {% endif %}
       {% endif %}
-    </form>
+  </form>
 {% endblock %}
 

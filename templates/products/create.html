@@ -4,10 +4,11 @@
 
 {% block content %}
     <h1>Create a product</h1>
-    <form method="post" enctype="multipart/form-data" class="post-form contact-form">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-
-        {{ form.as_p }}
-        <input type="submit" class="" value="Create product"/>
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <input type="submit" class="form-control btn btn-success" value="Create product"/>
     </form>
 {% endblock %}
