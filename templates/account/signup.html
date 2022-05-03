@@ -2,10 +2,10 @@
 
 {% load crispy_forms_tags %}
 
-{% block title %}Cadastro{% endblock %}
+{% block title %}Sign-up{% endblock %}
 
 {% block content %}
-<h2>Cadastro</h2>
+<h2>Sign-up</h2>
 
 
 <form method="post">
@@ -15,14 +15,14 @@
     <form class="was-validated">
         <div class="custom-control custom-checkbox mb-3">
             <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
-            <label class="custom-control-label" for="customControlValidation1">Concordo com os Termos de Serviço da Plataforma ESCAMBOX*</label>
+            <label class="custom-control-label" for="customControlValidation1">I agree to the ESCAMBOX's Terms of Service*</label>
 
-            <div class="invalid-feedback">Por favor, aceite os Termos de Serviço para prosseguir com o cadastro.
+            <div class="invalid-feedback">Please, accept the Terms of Service to sign-up.
 
             </div>
         </div>
 
-        <button class="btn btn-success" href="#" type="submit">Cadastrar</button>
+        <button class="btn btn-success" href="#" type="submit">Sign-up</button>
         </form>
         {% endblock %}
 
