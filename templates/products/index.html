@@ -17,8 +17,18 @@
                     <input type="submit" class="btn btn-primary btn-sm" style="margin-left:5px;" value="Search 🔎">
                 {% if request.user.is_authenticated %}
                         <div class="btn-group ml-5" role="group">
-                            <button name="favorites" class="btn btn-warning btn-sm" value="true">Favorites ❤️</button>
-                            <button name="own_products" class="btn btn-primary btn-sm" value="true">My own products 😀</button>
+                            {% if request.GET.favorites == "true" %}
+                                <button name="favorites" class="btn btn-warning btn-sm active" value="false">Favorites ❤️</button>
+                            {% else %}
+                                <button name="favorites" class="btn btn-warning btn-sm" value="true">Favorites ❤️</button>
+                            {% endif %}
+
+                            {% if request.GET.own_products == "true" %}
+                            <button name="own_products" class="btn btn-primary btn-sm active" value="false">My own products 😀</button>
+                            {% else %}
+                                <button name="own_products" class="btn btn-primary btn-sm" value="true">My own products 😀</button>
+                            {% endif %}
+                            
                         </div>
                 {% endif %}
             </form>
