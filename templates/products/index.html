@@ -42,7 +42,7 @@
                     {% else %}
                         <img src="/static/placeholder.png" class="card-img-top" style="object-fit: cover; aspect-ratio: 1/1;"/>
                     {% endif %}
-                    <h5 class="card-header">{{ product.title|upper }}</h5>
+                    <h5 class="card-header">{{ product.title }}</h5>
                     <div class="card-body">
                         {% if product.description == "" %}
                         <p class="card-text text-muted font-italic">No description added</p>
