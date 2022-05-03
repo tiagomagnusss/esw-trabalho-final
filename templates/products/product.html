@@ -20,7 +20,7 @@
           {% else %}
               <p class="card-text">{{ product.description }}</p>
           {% endif %}
-          <a href="{% url 'pages:productdetail' pk=product.id %}" class="stretched-link"></a>
+          <a href="{% url 'pages:productdetail' pk=product.id %}"></a>
       </div>
       <div class="card-footer">
         <form>
