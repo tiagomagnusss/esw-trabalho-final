@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+    <h1>Product reports</h1>
+    <p><b>This page contains all the reports registered in the platform.</b></p>
+    <ul class="list-group">
+        {% for report in reports %}
+            <div class="card shadow-sm">
+                <h5 class="card-header">{{ report.product.title }}</h5>
+                <div class="card-body">
+                    <p class="card-text">{{ report.description }}</p>
+                    <a href="{% url 'pages:reportdetail' pk=report.id %}" class="stretched-link"></a>
+                </div>
+            </div>
+        {% endfor %}
+    </ul>
+
+    {% if page_obj is not None %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+{% endblock %}
+

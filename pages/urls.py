@@ -16,4 +16,8 @@ urlpatterns = [
     path('products/delete/<int:pk>/', views.ProductDeleteView.as_view(), name='productdelete'),
     path('products/sell/<int:pk>/', views.ProductSellView.as_view(), name='productsell'),
     path("trades/", views.TradeListView.as_view(), name='trades'),
+    path("reports/", views.ReportListView.as_view(), name='reports'),
+    path("reports/add?pk=<int:pk>", views.ReportCreateView.as_view(), name='reportcreate'),
+    path("reports/<int:pk>/", views.ReportDetailView.as_view(), name='reportdetail'),
+    path("reports/<int:pk>/", views.ReportDetailView.as_view(), name='reportaccept'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -25,3 +25,10 @@ class Trade(models.Model):
     buyer_email = models.EmailField(max_length=254)
     observation = models.CharField(max_length=60, blank=True, null=True)
 
+class Report(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    reporter = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    description = models.CharField(max_length=60)
+    created_at = models.DateTimeField(auto_now_add=True)
+    resolved = models.BooleanField(default=False)
+    resolved_at = models.DateTimeField(blank=True, null=True)

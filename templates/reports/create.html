@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Report product{% endblock %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data" class="post-form contact-form">
+        {% csrf_token %}
+        <h1>Why do you want to report the product: "{{ product.title }}?"</h1>
+
+        {{ form.as_p }}
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+        <input type='submit' value="Report" class="btn btn-success">
+        <a href="{% url 'pages:products' %}" class="btn btn-danger">Cancel</a>
+    </form>
+{% endblock %}

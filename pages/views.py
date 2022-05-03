@@ -1,11 +1,12 @@
+from datetime import timezone
 from django.http import Http404, HttpResponseRedirect
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.forms import ModelForm, TextInput, NumberInput
+from django.forms import ModelForm, TextInput, NumberInput, HiddenInput, DateTimeInput
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.urls import reverse
-from pages.models import Product, Trade
+from pages.models import Product, Trade, Report
 
 
 class HomePageView(TemplateView):
@@ -249,3 +250,87 @@ class TradeListView(ListView):
 
         context['trades'] = trades
         return context
+
+class ReportListView(ListView):
+    paginate_by = 10
+    model = Report
+    template_name = "reports/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ReportListView, self).get_context_data(**kwargs)
+
+        if self.request.user.is_staff:
+            report = Report.objects.all()
+        else:
+            report = Report.objects.all().filter(reporter=self.request.user)
+
+        report = report.order_by('-created_at')
+        paginator = Paginator(report, self.paginate_by)
+        page = self.request.GET.get('page')
+
+        try:
+            reports = paginator.page(page)
+        except PageNotAnInteger:
+            reports = paginator.page(1)
+        except EmptyPage:
+            reports = paginator.page(paginator.num_pages)
+
+        context['reports'] = reports
+        return context
+
+class ReportForm(ModelForm):
+    class Meta:
+        model = Report
+        fields = ('description',)
+        widgets = {
+            'description': TextInput(attrs={'class': 'form-control'})
+        }
+class ReportCreateView(CreateView):
+    model = Report
+    form_class = ReportForm
+    template_name = 'reports/create.html'
+
+    def form_valid(self, form):
+        form.instance.reporter = self.request.user
+        form.instance.product_id = self.kwargs.get('pk')
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('pages:reportdetail', kwargs={'pk': self.object.id})
+
+    def get_context_data(self, **kwargs):
+        context = super(ReportCreateView, self).get_context_data(**kwargs)
+        product = Product.objects.get(id=self.kwargs.get('pk'))
+        context['product'] = product
+        return context
+
+class ReportDetailView(DetailView):
+    model = Report
+    template_name = 'reports/report.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(ReportDetailView, self).get_context_data(**kwargs)
+        report = Report.objects.get(id=self.kwargs.get('pk'))
+        product = Product.objects.get(id=report.product_id)
+        context['report'] = report
+        context['product'] = product
+        return context
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            report = Report.objects.get(id=self.kwargs.get('pk'))
+            report.resolved = True
+            report.save()
+            report = Report.objects.get(id=kwargs.get('pk'))
+
+            # set resolved with timestamp
+            report.resolved = True
+            report.save()
+
+            product = Product.objects.get(id=report.product_id)
+            # delete the product
+            product.delete()
+
+            return HttpResponseRedirect(reverse('pages:products'))
+        else:
+            return HttpResponseRedirect(reverse('pages:login'))
