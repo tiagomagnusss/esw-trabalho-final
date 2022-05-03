@@ -15,12 +15,18 @@
     <div class="card shadow-sm">
       <h5 class="card-header">{{ product.title }}</h5>
       <div class="card-body">
-          {% if product.description == "" %}
-          <p class="card-text text-muted font-italic">No description added</p>
-          {% else %}
-              <p class="card-text">{{ product.description }}</p>
-          {% endif %}
-          <a href="{% url 'pages:productdetail' pk=product.id %}"></a>
+        {% if product.description == "" %}
+        <p class="card-text text-muted font-italic">No description added</p>
+        {% else %}
+            <p class="card-text">{{ product.description }}</p>
+        {% endif %}
+        <a href="{% url 'pages:productdetail' pk=product.id %}"></a>
+
+        {% if request.user.is_authenticated %}
+          <div class="bg-light">Please, send your offer to: {{ product.original_owner.email }}</div>
+        {% else %}
+          <div class="bg-light">Please, log in to see the owner of this product.</div>
+        {% endif %}
       </div>
       <div class="card-footer">
         <span class="btn-group">
@@ -50,11 +56,4 @@
       </div>
     </div>
   </div>
-
-
-
-
-
-
 {% endblock %}
-
