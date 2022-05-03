@@ -47,7 +47,7 @@
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link">Olá, {{request.user.username}}!</a>
+                        <a class="nav-link">Hello, {{request.user.username}}!</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'account_logout' %}">Logout</a>
